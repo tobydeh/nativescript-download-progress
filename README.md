@@ -20,8 +20,20 @@ tns plugin add nativescript-download-progress
 	
 ```javascript
 var DownloadProgress = require("nativescript-download-progress").DownloadProgress;
-// Angular
-// import { DownloadProgress } from "nativescript-download-progress"
+
+var download = new DownloadProgress();
+download.addProgressCallback(function(progress) {
+    console.log('Progress:', progress);
+})
+download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(function(f){
+    console.log("Success", f);
+}).catch(function(e){
+    console.log("Error", e);
+})
+```
+
+```typescript
+var DownloadProgress = require("nativescript-download-progress").DownloadProgress;
 
 var download = new DownloadProgress();
 download.addProgressCallback((progress)=>{
@@ -32,7 +44,7 @@ download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then((
 }).catch((e)=>{
     console.log("Error", e);
 })
-```)
+```
     
 ## License
 
