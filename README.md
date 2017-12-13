@@ -2,8 +2,6 @@
 
 [![npm version](https://badge.fury.io/js/nativescript-download-progress.svg)](http://badge.fury.io/js/nativescript-download-progress)
 
-[![NPM](https://nodei.co/npm/nativescript-download-progress.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/nativescript-download-progress/)
-
 Nativescripts http.getFile method stores the data in memory which can lead to problems with large files. This plugin writes the data to disk not memory and provides progress updates.
 
 In case you develop UI plugin, this is where you can add some screenshots.
