@@ -1,8 +1,10 @@
-# Your Plugin Name
+# nativescript-download-progress ![apple](https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-32.png) ![android](https://cdn4.iconfinder.com/data/icons/logos-3/228/android-32.png)
 
-Add your plugin badges here. See [nativescript-urlhandler](https://github.com/hypery2k/nativescript-urlhandler) for example.
+[![npm version](https://badge.fury.io/js/nativescript-download-progress.svg)](http://badge.fury.io/js/nativescript-download-progress)
 
-Then describe what's the purpose of your plugin. 
+[![NPM](https://nodei.co/npm/nativescript-download-progress.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/nativescript-download-progress/)
+
+Nativescripts http.getFile method stores the data in memory which can lead to problems with large files. This plugin writes the data to disk not memory and provides progress updates.
 
 In case you develop UI plugin, this is where you can add some screenshots.
 
@@ -12,28 +14,29 @@ Describe the prerequisites that the user need to have installed before using you
 
 ## Installation
 
-Describe your plugin installation steps. Ideally it would be something like:
 
 ```javascript
-tns plugin add <your-plugin-name>
+tns plugin add nativescript-download-progress
 ```
 
 ## Usage 
 
-Describe any usage specifics for your plugin. Give examples for Android, iOS, Angular if needed. See [nativescript-drop-down](https://www.npmjs.com/package/nativescript-drop-down) for example.
 	
-	```javascript
-    Usage code snippets here
-    ```)
+```javascript
+var DownloadProgress = require("nativescript-download-progress").DownloadProgress;
+// Angular
+// import { DownloadProgress } from "nativescript-download-progress"
 
-## API
-
-Describe your plugin methods and properties here. See [nativescript-feedback](https://github.com/EddyVerbruggen/nativescript-feedback) for example.
-    
-| Property | Default | Description |
-| --- | --- | --- |
-| some property | property default value | property description, default values, etc.. |
-| another property | property default value | property description, default values, etc.. |
+var download = new DownloadProgress();
+download.addProgressCallback((progress)=>{
+    console.log('Progress:', progress);
+})
+download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then((f)=>{
+    console.log("Success", f);
+}).catch((e)=>{
+    console.log("Error", e);
+})
+```)
     
 ## License
 

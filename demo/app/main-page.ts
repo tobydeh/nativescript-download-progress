@@ -1,7 +1,8 @@
 import * as observable from 'tns-core-modules/data/observable';
 import * as pages from 'tns-core-modules/ui/page';
 
-import { DownloadProgress } from "nativescript-download-progress"
+//import { DownloadProgress } from "nativescript-download-progress"
+var DownloadProgress = require("nativescript-download-progress").DownloadProgress;
 
 export function pageLoaded(args) {
     var page = args.object;
