@@ -15,7 +15,7 @@ Nativescripts http.getFile method stores the data in memory which causes out of 
 tns plugin add nativescript-download-progress
 ```
 
-## Usage 
+## Javascript Example 
 
 	
 ```javascript
@@ -31,6 +31,8 @@ download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(f
     console.log("Error", e);
 })
 ```
+
+## Typescript Example 
 
 ```typescript
 var DownloadProgress = require("nativescript-download-progress").DownloadProgress;
