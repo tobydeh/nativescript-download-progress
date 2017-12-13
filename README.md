@@ -2,7 +2,11 @@
 
 [![npm version](https://badge.fury.io/js/nativescript-download-progress.svg)](http://badge.fury.io/js/nativescript-download-progress)
 
-Nativescripts http.getFile method stores the data in memory which causes out of memory exceptions with large files. This plugin writes the data to disk not memory and provides progress updates.
+## Introduction
+
+This plugin allows you to download large files and provides progress updates.
+
+Nativescripts http.getFile method stores the data in memory which causes out of memory exceptions with large files.
 
 ## Installation
 
