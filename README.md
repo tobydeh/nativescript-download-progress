@@ -4,12 +4,6 @@
 
 Nativescripts http.getFile method stores the data in memory which can lead to problems with large files. This plugin writes the data to disk not memory and provides progress updates.
 
-In case you develop UI plugin, this is where you can add some screenshots.
-
-## (Optional) Prerequisites / Requirements
-
-Describe the prerequisites that the user need to have installed before using your plugin. See [nativescript-firebase plugin](https://github.com/eddyverbruggen/nativescript-plugin-firebase) for example.
-
 ## Installation
 
 
