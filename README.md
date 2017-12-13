@@ -35,7 +35,7 @@ download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(f
 ## Typescript Example 
 
 ```typescript
-var DownloadProgress = require("nativescript-download-progress").DownloadProgress;
+import { DownloadProgress } from "nativescript-download-progress"
 
 var download = new DownloadProgress();
 download.addProgressCallback((progress)=>{
