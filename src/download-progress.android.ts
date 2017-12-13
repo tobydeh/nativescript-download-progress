@@ -6,8 +6,8 @@ import * as common from "tns-core-modules/http/http-request/http-request-common"
 import getter = utils.ios.getter;
 
 // Hack which I don't fully understand.
-//var policy = new android.os.StrictMode.ThreadPolicy.Builder().permitAll().build();
-//android.os.StrictMode.setThreadPolicy(policy);
+var policy = new android.os.StrictMode.ThreadPolicy.Builder().permitAll().build();
+android.os.StrictMode.setThreadPolicy(policy);
 
 export class DownloadProgress extends android.os.AsyncTask<string, Number, boolean> {
 
