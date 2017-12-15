@@ -22,9 +22,9 @@ export class DownloadProgress {
                     if(this.progressCallback) {
                         this.progressCallback(msg.data.progress);
                     }
-                } else if(msg.data.file) {
+                } else if(msg.data.filePath) {
                     worker.terminate();
-                    this.promiseResolve(msg.data.file);
+                    this.promiseResolve(fs.File.fromPath(msg.data.filePath));
                 } else {
                     worker.terminate();
                     this.promiseReject(msg.data.error);
