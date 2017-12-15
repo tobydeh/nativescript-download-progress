@@ -19,7 +19,9 @@ export class DownloadProgress {
             worker.postMessage({ url: url, destinationFilePath: destinationFilePath });
             worker.onmessage = (msg:any)=> {
                 if(msg.data.progress) {
-                    this.progressCallback(msg.data.progress);
+                    if(this.progressCallback) {
+                        this.progressCallback(msg.data.progress);
+                    }
                 } else if(msg.data.file) {
                     worker.terminate();
                     this.promiseResolve(msg.data.file);
