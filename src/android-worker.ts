@@ -43,7 +43,7 @@ import * as common from "tns-core-modules/http/http-request/http-request-common"
                 (<any>global).postMessage({ progress: progress });
             }
         }
-        (<any>global).postMessage({ file:destinationFile });
+        (<any>global).postMessage({ filePath:destinationFile.path });
     } catch (ex) {
         (<any>global).postMessage({ error:ex });
     } finally {

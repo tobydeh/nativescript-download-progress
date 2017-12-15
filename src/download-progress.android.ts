@@ -12,7 +12,7 @@ export class DownloadProgress {
     }
 
     public downloadFile(url: string, destinationFilePath?: string): Promise<fs.File> {
-        return new Promise((resolve, reject) => {
+        return new Promise<fs.File>((resolve, reject) => {
             this.promiseResolve = resolve;
             this.promiseReject = reject;
             var worker = new Worker('./android-worker.js');
@@ -22,9 +22,9 @@ export class DownloadProgress {
                     if(this.progressCallback) {
                         this.progressCallback(msg.data.progress);
                     }
-                } else if(msg.data.file) {
+                } else if(msg.data.filePath) {
                     worker.terminate();
-                    this.promiseResolve(msg.data.file);
+                    this.promiseResolve(fs.File.fromPath(msg.data.filePath));
                 } else {
                     worker.terminate();
                     this.promiseReject(msg.data.error);
