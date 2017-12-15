@@ -12,7 +12,7 @@ export class DownloadProgress {
     }
 
     public downloadFile(url: string, destinationFilePath?: string): Promise<fs.File> {
-        return new Promise((resolve, reject) => {
+        return new Promise<fs.File>((resolve, reject) => {
             this.promiseResolve = resolve;
             this.promiseReject = reject;
             var worker = new Worker('./android-worker.js');
