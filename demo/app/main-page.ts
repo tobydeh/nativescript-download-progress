@@ -6,7 +6,6 @@ import { DownloadProgress } from "nativescript-download-progress"
 export function pageLoaded(args) {
     var page = args.object;
     var context = new observable.Observable();
-    context.set('progress', 0);
     page.bindingContext = context;
 }
 
@@ -20,7 +19,7 @@ export function onDownloadTap(args) {
         btn.page.bindingContext.set('progress', progress);
     })
     download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then((f)=>{
-        console.log("Success", f);
+        console.log("Success", f.path);
         btn.isEnabled = true;
     }).catch((e)=>{
         console.log("Error", e);
