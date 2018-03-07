@@ -1,6 +1,14 @@
 import * as application from "tns-core-modules/application";
 import * as fs from "tns-core-modules/file-system";
 
+let worker: Worker;
+if (global["TNS_WEBPACK"]) {
+    const WorkerScript = require("nativescript-worker-loader!./android-worker.js");
+    worker = new WorkerScript();
+} else {
+    worker = new Worker("./android-worker.js");
+}
+
 export class DownloadProgress {
 
     private promiseResolve;
@@ -15,7 +23,7 @@ export class DownloadProgress {
         return new Promise<fs.File>((resolve, reject) => {
             this.promiseResolve = resolve;
             this.promiseReject = reject;
-            var worker = new Worker('./android-worker.js');
+            //var worker = new Worker('./android-worker.js');
             worker.postMessage({ url: url, destinationFilePath: destinationFilePath });
             worker.onmessage = (msg:any)=> {
                 if(msg.data.progress) {
