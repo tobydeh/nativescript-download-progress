@@ -16,7 +16,7 @@ export function onDownloadTap(args) {
 
     let download = new DownloadProgress();
     download.addProgressCallback((progress)=>{
-        btn.page.bindingContext.set('progress', progress);
+        btn.page.bindingContext.set('progress', Math.round(progress*100));
     })
     download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then((f)=>{
         console.log("Success", f.path);
