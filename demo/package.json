@@ -34,6 +34,7 @@
     "nativescript-worker-loader": "^0.8.1",
     "raw-loader": "~0.5.1",
     "resolve-url-loader": "~2.2.1",
+    "tns-platform-declarations": "^3.4.1",
     "typescript": "2.6.2",
     "uglifyjs-webpack-plugin": "~1.1.6",
     "webpack": "~3.10.0",
