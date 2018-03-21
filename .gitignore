@@ -2,6 +2,7 @@
 .idea
 .DS_Store
 *.js
+!src/android-worker.js
 *.js.map
 *.log
 *package-lock.json
@@ -18,8 +19,17 @@ demo/*.d.ts
 !demo/references.d.ts
 demo/lib
 demo/platforms
+!demo-angular/karma.conf.js
+!demo-angular/app/tests/*.js
+demo-angular/*.d.ts
+!demo-angular/references.d.ts
+demo-angular/lib
+demo-angular/platforms
 node_modules
 publish/src
 publish/package
 demo/report/report.html
 demo/report/stats.json
+demo-angular/report/report.html
+demo-angular/report/stats.json
+

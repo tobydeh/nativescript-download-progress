@@ -1,5 +1,12 @@
-require('globals'); // necessary to bootstrap tns modules on the new thread
-
+if (global['TNS_WEBPACK']) {
+    if (global.android) {
+      // without this JavaProxy is missing and we can't import vendor below
+      global.require('~/../internal/ts_helpers.js');
+    }
+    global.require('~/vendor');
+} else {
+    require('globals');
+}
 //import * as fs from "tns-core-modules/file-system";
 //import * as common from "tns-core-modules/http/http-request/http-request-common";
 var fs = require("tns-core-modules/file-system");
