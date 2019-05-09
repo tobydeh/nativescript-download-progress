@@ -9,7 +9,7 @@ export declare class DownloadProgress {
   addProgressCallback(callback: any);
   downloadFile(
     url: string,
-    options: RequestOptions,
+    options?: RequestOptions,
     destinationFilePath?: string
   ): Promise<fs.File>;
 }
