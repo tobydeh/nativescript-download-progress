@@ -1,6 +1,9 @@
 /* Include.gradle configuration: http://docs.nativescript.org/plugins/plugins#includegradle-specification */
 
 android {
+	// add flavour dimension
+	// see - https://developer.android.com/studio/build/build-variants?utm_source=android-studio#product-flavors
+	flavorDimensions "nativescript-download-progress"
 	productFlavors {
 		"nativescript-download-progress" {
 			dimension "nativescript-download-progress"
