@@ -36,6 +36,12 @@
     "homepage": "https://github.com/tobydeh/nativescript-download-progress",
     "readmeFilename": "README.md",
     "devDependencies": {
+        "eslint": "^5.16.0",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-plugin-import": "^2.17.3",
+        "eslint-plugin-node": "^9.1.0",
+        "eslint-plugin-promise": "^4.1.1",
+        "eslint-plugin-standard": "^4.0.0",
         "prompt": "^1.0.0",
         "tns-core-modules": "^5.4.2",
         "tns-platform-declarations": "^5.4.2",
