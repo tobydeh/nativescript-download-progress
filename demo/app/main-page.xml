@@ -1,7 +1,0 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded" class="page">
-  <StackLayout class="p-20">
-    <Label class="h2 text-center m-t-20" text="Download Progress Example" />
-    <Button class="btn btn-primary m-t-20" text="Start Download" isEnabled="true" onTap="onDownloadTap" />
-    <Progress class="m-t-20" value="{{ progress }}" maxValue="100" />
-  </StackLayout>
-</Page>
