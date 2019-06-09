@@ -1,12 +1,13 @@
 import * as fs from "tns-core-modules/file-system";
 
-declare type RequestOptions = {
+export declare type RequestOptions = {
   method: string;
   headers: Object;
 };
+
 export declare class DownloadProgress {
   constructor();
-  addProgressCallback(callback: any);
+  addProgressCallback(callback: any): void;
   downloadFile(
     url: string,
     options?: RequestOptions,
