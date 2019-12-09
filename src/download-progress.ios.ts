@@ -1,9 +1,8 @@
 import * as fs from "tns-core-modules/file-system";
 import * as utils from "tns-core-modules/utils/utils";
-import * as common from "tns-core-modules/http/http-request/http-request-common";
-import getter = utils.ios.getter;
+import * as common from "@nativescript/core/http/http-request/http-request-common.js";
 
-const currentDevice = utils.ios.getter(UIDevice, UIDevice.currentDevice);
+const currentDevice = UIDevice.currentDevice;
 const device =
   currentDevice.userInterfaceIdiom === UIUserInterfaceIdiom.Phone
     ? "Phone"
@@ -15,11 +14,8 @@ const USER_AGENT = `Mozilla/5.0 (i${device}; CPU OS ${osVersion.replace(
   ".",
   "_"
 )} like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/${osVersion} Mobile/10A5355d Safari/8536.25`;
-const sessionConfig = getter(
-  NSURLSessionConfiguration,
-  NSURLSessionConfiguration.defaultSessionConfiguration
-);
-const queue = getter(NSOperationQueue, NSOperationQueue.mainQueue);
+const sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration;
+const queue = NSOperationQueue.mainQueue;
 
 export class DownloadProgress extends NSObject
   implements NSURLSessionDataDelegate {
