@@ -7,7 +7,7 @@
     "rimraf": "^2.5.0"
   },
   "dependencies": {
-    "tns-core-modules": "^5.4.2",
+    "tns-core-modules": "^6.2.3",
     "typescript": "3.5.1"
   }
 }
