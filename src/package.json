@@ -6,15 +6,16 @@
     "typings": "index.d.ts",
     "nativescript": {
         "platforms": {
-            "android": "3.4.2",
-            "ios": "3.4.1"
+            "android": "6.2.0",
+            "ios": "6.2.0"
         }
     },
     "scripts": {
-        "tsc": "tsc -skipLibCheck",
-        "build": "npm i && tsc",
-        "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
-        "plugin.tscwatch": "npm run tsc -- -w"
+      "tsc": "npm i && tsc",
+      "build": "npm run tsc",
+      "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
+      "plugin.tscwatch": "npm run tsc -- -w"
+
     },
     "keywords": [
         "NativeScript",
@@ -43,10 +44,12 @@
         "eslint-plugin-promise": "^4.1.1",
         "eslint-plugin-standard": "^4.0.0",
         "prompt": "^1.0.0",
-        "tns-core-modules": "^5.4.2",
-        "tns-platform-declarations": "^5.4.2",
-        "tslint": "^5.0.0",
-        "typescript": "^3.5.1"
+        "rimraf": "^2.6.3",
+        "semver": "^5.6.0",
+        "tns-core-modules": "^6.2.3",
+        "tns-platform-declarations": "^6.2.3",
+        "tslint": "~5.19.0",
+        "typescript": "^3.5.3"
     },
     "dependencies": {},
     "bootstrapper": "nativescript-plugin-seed"
