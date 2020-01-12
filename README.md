@@ -15,24 +15,7 @@ Nativescripts http.getFile method stores the data in memory which can cause out 
 tns plugin add nativescript-download-progress
 ```
 
-## Javascript Example
-
-	
-```javascript
-var DownloadProgress = require("nativescript-download-progress").DownloadProgress;
-
-var download = new DownloadProgress();
-download.addProgressCallback(function(progress) {
-    console.log('Progress:', progress);
-})
-download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(function(f) {
-    console.log("Success", f);
-}).catch(function(e) {
-    console.log("Error", e);
-})
-```
-
-## Typescript Example
+## Example
 
 ```typescript
 import { DownloadProgress } from "nativescript-download-progress"
@@ -41,10 +24,10 @@ const download = new DownloadProgress();
 download.addProgressCallback(progress => {
     console.log('Progress:', progress);
 })
-download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(f => {
-    console.log("Success", f);
-}).catch(e => {
-    console.log("Error", e);
+download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(file => {
+    console.log("Success", file);
+}).catch(error => {
+    console.log("Error", error);
 })
 ```
 
@@ -57,18 +40,18 @@ const download = new DownloadProgress();
 download.addProgressCallback(progress => {
     console.log('Progress:', progress);
 })
-const url: string = "http://ipv4.download.thinkbroadband.com/20MB.zip";
-const destinationPath: string = "some/path/to/file.zip";
+const url = "http://ipv4.download.thinkbroadband.com/20MB.zip";
+const destinationPath = "some/path/to/file.zip";
 const requestOptions: RequestOptions = {
     method: "GET",
     headers: {
        Authorization: "Bearer token",
     }
 };
-download.downloadFile(url, requestOptions, destinationPath).then(f => {
-    console.log("Success", f);
-}).catch(e => {
-    console.log("Error", e);
+download.downloadFile(url, requestOptions, destinationPath).then(file => {
+    console.log("Success", file);
+}).catch(error => {
+    console.log("Error", error);
 })
 ```
 

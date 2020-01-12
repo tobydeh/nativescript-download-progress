@@ -1,25 +1,26 @@
-import * as fs from "tns-core-modules/file-system";
+import * as fs from 'tns-core-modules/file-system';
 
 export class DownloadProgress {
   private promiseResolve;
   private promiseReject;
   private progressCallback;
 
-  public addProgressCallback(callback: any) {
+  public addProgressCallback (callback: any) {
     this.progressCallback = callback;
   }
 
-  public downloadFile(
+  public downloadFile (
     url: string,
     options?: any,
     destinationFilePath?: string
   ): Promise<fs.File> {
     let worker;
-    if (global["TNS_WEBPACK"]) {
-      const WorkerScript = require("nativescript-worker-loader!./android-worker.js");
+    if ((global as any).TNS_WEBPACK) {
+      // eslint-disable-next-line
+      const WorkerScript = require('nativescript-worker-loader!./android-worker.js');
       worker = new WorkerScript();
     } else {
-      worker = new Worker("./android-worker.js");
+      worker = new Worker('./android-worker.js');
     }
     return new Promise<fs.File>((resolve, reject) => {
       // we check if options is a string
@@ -27,7 +28,7 @@ export class DownloadProgress {
       // destinationFilePath was the second parameter.
       // so we check if options is possibly destinationFilePath {String}
       let isOptionsObject = true;
-      if (typeof options === "string") {
+      if (typeof options === 'string') {
         isOptionsObject = false;
         destinationFilePath = options;
       }
