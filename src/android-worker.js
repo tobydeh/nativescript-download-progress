@@ -8,8 +8,8 @@ if (global.TNS_WEBPACK) {
 } else {
   require('globals');
 }
-const fs = require('tns-core-modules/file-system');
-const common = require('tns-core-modules/http/http-request/http-request-common');
+const fs = require('@nativescript/core/file-system');
+const common = require('@nativescript/core/http/http-request/http-request-common');
 
 global.onmessage = function (msg) {
   const url = msg.data.url;

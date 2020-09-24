@@ -1,4 +1,4 @@
-import * as fs from "tns-core-modules/file-system";
+import { File } from "@nativescript/core";
 
 export declare type RequestOptions = {
   method: string;
@@ -12,5 +12,5 @@ export declare class DownloadProgress {
     url: string,
     options?: RequestOptions,
     destinationFilePath?: string
-  ): Promise<fs.File>;
+  ): Promise<File>;
 }

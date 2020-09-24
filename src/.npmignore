@@ -8,3 +8,5 @@ platforms/android/*
 !platforms/android/*.aar
 !platforms/android/*.jar
 .DS_Store
+.eslintignore
+.eslintrc.json
