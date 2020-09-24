@@ -73,7 +73,7 @@ export class DownloadProgress {
         }
         const session = NSURLSession.sessionWithConfigurationDelegateDelegateQueue(
           sessionConfig,
-          new DownloadProgressDelegate(),
+          DownloadProgressDelegate.initWithOwner(this),
           queue
         );
         const dataTask = session.dataTaskWithRequest(urlRequest);
