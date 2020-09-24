@@ -39,7 +39,7 @@ export class DownloadProgress {
       worker.postMessage({
         url,
         options: isOptionsObject ? options : undefined,
-        destinationFilePath: destinationFilePath,
+        destinationFilePath: destinationFilePath
       });
       worker.onmessage = (msg: any) => {
         if (msg.data.progress) {
