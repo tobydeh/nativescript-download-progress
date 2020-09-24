@@ -1,4 +1,4 @@
-import { File } from "@nativescript/core";
+import { File } from '@nativescript/core';
 
 export declare type RequestOptions = {
   method: string;

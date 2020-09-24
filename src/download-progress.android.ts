@@ -5,11 +5,11 @@ export class DownloadProgress {
   private promiseReject;
   private progressCallback;
 
-  public addProgressCallback (callback: any) {
+  public addProgressCallback(callback: any) {
     this.progressCallback = callback;
   }
 
-  public downloadFile (
+  public downloadFile(
     url: string,
     options?: any,
     destinationFilePath?: string
@@ -39,7 +39,7 @@ export class DownloadProgress {
       worker.postMessage({
         url,
         options: isOptionsObject ? options : undefined,
-        destinationFilePath: destinationFilePath
+        destinationFilePath: destinationFilePath,
       });
       worker.onmessage = (msg: any) => {
         if (msg.data.progress) {
@@ -57,9 +57,7 @@ export class DownloadProgress {
 
       worker.onerror = err => {
         console.log(
-          `An unhandled error occurred in worker: ${err.filename}, line: ${
-            err.lineno
-          } :`
+          `An unhandled error occurred in worker: ${err.filename}, line: ${err.lineno} :`
         );
         this.promiseReject(err.message);
       };

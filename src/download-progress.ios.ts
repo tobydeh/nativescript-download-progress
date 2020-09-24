@@ -1,17 +1,17 @@
-import { File } from "@nativescript/core";
-import * as common from "@nativescript/core/http/http-request/http-request-common";
+import { File } from '@nativescript/core';
+import * as common from '@nativescript/core/http/http-request/http-request-common';
 
 const currentDevice = UIDevice.currentDevice;
 const device =
   currentDevice.userInterfaceIdiom === UIUserInterfaceIdiom.Phone
-    ? "Phone"
-    : "Pad";
+    ? 'Phone'
+    : 'Pad';
 const osVersion = currentDevice.systemVersion;
 
-const USER_AGENT_HEADER = "User-Agent";
+const USER_AGENT_HEADER = 'User-Agent';
 const USER_AGENT = `Mozilla/5.0 (i${device}; CPU OS ${osVersion.replace(
-  ".",
-  "_"
+  '.',
+  '_'
 )} like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/${osVersion} Mobile/10A5355d Safari/8536.25`;
 const sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration;
 const queue = NSOperationQueue.mainQueue;
@@ -38,7 +38,7 @@ export class DownloadProgress {
       // destinationFilePath was the second parameter.
       // so we check if options is possibly destinationFilePath {String}
       let isOptionsObject = true;
-      if (typeof options === "string") {
+      if (typeof options === 'string') {
         isOptionsObject = false;
         destinationFilePath = options;
       }
@@ -51,7 +51,7 @@ export class DownloadProgress {
         } else {
           this.destinationFile = File.fromPath(common.getFilenameFromUrl(url));
         }
-        this.destinationFile.writeTextSync("", (e) => {
+        this.destinationFile.writeTextSync('', e => {
           throw e;
         });
         const urlRequest = NSMutableURLRequest.requestWithURL(
@@ -69,7 +69,7 @@ export class DownloadProgress {
             }
           }
         } else {
-          urlRequest.HTTPMethod = "GET";
+          urlRequest.HTTPMethod = 'GET';
         }
         const session = NSURLSession.sessionWithConfigurationDelegateDelegateQueue(
           sessionConfig,
