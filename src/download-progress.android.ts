@@ -1,11 +1,13 @@
-import * as fs from 'tns-core-modules/file-system';
+import { File } from '@nativescript/core';
+
+type ProgressCallback = (progress: number) => void;
 
 export class DownloadProgress {
-  private promiseResolve;
-  private promiseReject;
-  private progressCallback;
+  private promiseResolve: (value?: File | PromiseLike<File>) => void;
+  private promiseReject: (reason: any) => void;
+  private progressCallback: ProgressCallback;
 
-  public addProgressCallback (callback: any) {
+  public addProgressCallback (callback: ProgressCallback) {
     this.progressCallback = callback;
   }
 
@@ -13,16 +15,16 @@ export class DownloadProgress {
     url: string,
     options?: any,
     destinationFilePath?: string
-  ): Promise<fs.File> {
+  ): Promise<File> {
     let worker;
-    if ((global as any).TNS_WEBPACK) {
+    if (global.TNS_WEBPACK) {
       // eslint-disable-next-line
       const WorkerScript = require('nativescript-worker-loader!./android-worker.js');
       worker = new WorkerScript();
     } else {
       worker = new Worker('./android-worker.js');
     }
-    return new Promise<fs.File>((resolve, reject) => {
+    return new Promise<File>((resolve, reject) => {
       // we check if options is a string
       // since in older versions of this plugin,
       // destinationFilePath was the second parameter.
@@ -48,7 +50,7 @@ export class DownloadProgress {
           }
         } else if (msg.data.filePath) {
           worker.terminate();
-          this.promiseResolve(fs.File.fromPath(msg.data.filePath));
+          this.promiseResolve(File.fromPath(msg.data.filePath));
         } else {
           worker.terminate();
           this.promiseReject(msg.data.error);

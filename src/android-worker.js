@@ -8,8 +8,8 @@ if (global.TNS_WEBPACK) {
 } else {
   require('globals');
 }
-const fs = require('tns-core-modules/file-system');
-const common = require('tns-core-modules/http/http-request/http-request-common');
+const File = require('@nativescipt/core/file-system').File;
+const getFilenameFromUrl = require('@nativescipt/core/http/http-request/http-request-common').getFilenameFromUrl;
 
 global.onmessage = function (msg) {
   const url = msg.data.url;
@@ -23,9 +23,9 @@ global.onmessage = function (msg) {
 
   try {
     if (destinationFilePath) {
-      destinationFile = fs.File.fromPath(destinationFilePath);
+      destinationFile = File.fromPath(destinationFilePath);
     } else {
-      destinationFile = fs.File.fromPath(common.getFilenameFromUrl(url));
+      destinationFile = File.fromPath(getFilenameFromUrl(url));
     }
     destinationFile.writeTextSync('', function (e) {
       throw e;

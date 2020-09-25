@@ -1,5 +1,7 @@
-import * as fs from 'tns-core-modules/file-system';
-import * as common from 'tns-core-modules/http/http-request/http-request-common';
+import { File } from '@nativescript/core';
+import { getFilenameFromUrl } from '@nativescript/core/http/http-request/http-request-common';
+
+type ProgressCallback = (progress: number) => void;
 
 const currentDevice = UIDevice.currentDevice;
 const device =
@@ -16,19 +18,10 @@ const USER_AGENT = `Mozilla/5.0 (i${device}; CPU OS ${osVersion.replace(
 const sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration;
 const queue = NSOperationQueue.mainQueue;
 
-export class DownloadProgress extends NSObject
-  implements NSURLSessionDataDelegate {
-  public static ObjCProtocols = [NSURLSessionDataDelegate];
+export class DownloadProgress {
+  private progressCallback: ProgressCallback;
 
-  private destinationFile: fs.File;
-  private urlResponse: NSURLResponse;
-
-  private progressCallback;
-
-  private promiseResolve;
-  private promiseReject;
-
-  public addProgressCallback (callback: any) {
+  public addProgressCallback (callback: ProgressCallback) {
     this.progressCallback = callback;
   }
 
@@ -36,8 +29,10 @@ export class DownloadProgress extends NSObject
     url: string,
     options?: any,
     destinationFilePath?: string
-  ): Promise<fs.File> {
-    return new Promise<fs.File>((resolve, reject) => {
+  ): Promise<File> {
+    return new Promise<File>((resolve, reject) => {
+      const progressCallback = this.progressCallback;
+      let destinationFile: File;
       // we check if options is a string
       // since in older versions of this plugin,
       // destinationFilePath was the second parameter.
@@ -48,17 +43,16 @@ export class DownloadProgress extends NSObject
         destinationFilePath = options;
       }
 
-      this.promiseResolve = resolve;
-      this.promiseReject = reject;
       try {
         if (destinationFilePath) {
-          this.destinationFile = fs.File.fromPath(destinationFilePath);
+          destinationFile = File.fromPath(destinationFilePath);
         } else {
-          this.destinationFile = fs.File.fromPath(
-            common.getFilenameFromUrl(url)
+          destinationFile = File.fromPath(
+            getFilenameFromUrl(url)
           );
         }
-        this.destinationFile.writeTextSync('', e => {
+
+        destinationFile.writeTextSync('', e => {
           throw e;
         });
         const urlRequest = NSMutableURLRequest.requestWithURL(
@@ -78,9 +72,60 @@ export class DownloadProgress extends NSObject
         } else {
           urlRequest.HTTPMethod = 'GET';
         }
+
+        @NativeClass()
+        class DownloadProgressDelegate
+          extends NSObject
+          implements NSURLSessionDataDelegate {
+          static ObjCProtocols = [NSURLSessionDataDelegate];
+          private urlResponse: NSURLResponse;
+
+          public URLSessionDataTaskDidReceiveResponseCompletionHandler (
+            session: NSURLSession,
+            dataTask: NSURLSessionDataTask,
+            response: NSURLResponse,
+            completionHandler: (p1: NSURLSessionResponseDisposition) => void
+          ) {
+            completionHandler(NSURLSessionResponseDisposition.Allow);
+            this.urlResponse = response;
+          }
+
+          public URLSessionDataTaskDidReceiveData (
+            session: NSURLSession,
+            dataTask: NSURLSessionDataTask,
+            data: NSData
+          ) {
+            const fileHandle = NSFileHandle.fileHandleForWritingAtPath(
+              destinationFile.path
+            );
+            fileHandle.seekToEndOfFile();
+            fileHandle.writeData(data);
+            const progress =
+              ((100.0 / this.urlResponse.expectedContentLength) *
+                fileHandle.seekToEndOfFile()) /
+              100;
+            if (progressCallback) {
+              progressCallback(progress);
+            }
+            fileHandle.closeFile();
+          }
+
+          public URLSessionTaskDidCompleteWithError (
+            session: NSURLSession,
+            task: NSURLSessionTask,
+            error: NSError
+          ) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(destinationFile);
+            }
+          }
+        }
+
         const session = NSURLSession.sessionWithConfigurationDelegateDelegateQueue(
           sessionConfig,
-          this,
+          <DownloadProgressDelegate>DownloadProgressDelegate.new(),
           queue
         );
         const dataTask = session.dataTaskWithRequest(urlRequest);
@@ -90,47 +135,5 @@ export class DownloadProgress extends NSObject
         reject(ex);
       }
     });
-  }
-
-  public URLSessionDataTaskDidReceiveResponseCompletionHandler (
-    session: NSURLSession,
-    dataTask: NSURLSessionDataTask,
-    response: NSURLResponse,
-    completionHandler: (p1: NSURLSessionResponseDisposition) => void
-  ) {
-    completionHandler(NSURLSessionResponseDisposition.Allow);
-    this.urlResponse = response;
-  }
-
-  public URLSessionDataTaskDidReceiveData (
-    session: NSURLSession,
-    dataTask: NSURLSessionDataTask,
-    data: NSData
-  ) {
-    const fileHandle = NSFileHandle.fileHandleForWritingAtPath(
-      this.destinationFile.path
-    );
-    fileHandle.seekToEndOfFile();
-    fileHandle.writeData(data);
-    const progress =
-      ((100.0 / this.urlResponse.expectedContentLength) *
-        fileHandle.seekToEndOfFile()) /
-      100;
-    if (this.progressCallback) {
-      this.progressCallback(progress);
-    }
-    fileHandle.closeFile();
-  }
-
-  public URLSessionTaskDidCompleteWithError (
-    session: NSURLSession,
-    task: NSURLSessionTask,
-    error: NSError
-  ) {
-    if (error) {
-      this.promiseReject(error);
-    } else {
-      this.promiseResolve(this.destinationFile);
-    }
   }
 }
