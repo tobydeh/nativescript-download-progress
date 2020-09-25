@@ -1,6 +1,6 @@
 {
   "name": "nativescript-download-progress",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Download large files with progress events",
   "main": "download-progress",
   "typings": "index.d.ts",
