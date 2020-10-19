@@ -8,8 +8,8 @@ if (global.TNS_WEBPACK) {
 } else {
   require('globals');
 }
-const File = require('@nativescipt/core/file-system').File;
-const getFilenameFromUrl = require('@nativescipt/core/http/http-request/http-request-common').getFilenameFromUrl;
+const File = require('@nativescript/core/file-system').File;
+const getFilenameFromUrl = require('@nativescript/core/http/http-request/http-request-common').getFilenameFromUrl;
 
 global.onmessage = function (msg) {
   const url = msg.data.url;
