@@ -1,7 +1,7 @@
 import { File } from '@nativescript/core';
 import { getFilenameFromUrl } from '@nativescript/core/http/http-request/http-request-common';
 
-type ProgressCallback = (progress: number) => void;
+type ProgressCallback = (progress: number, url: string, destination: string) => void;
 
 const currentDevice = UIDevice.currentDevice;
 const device =
@@ -112,7 +112,7 @@ export class DownloadProgress {
                 fileHandle.seekToEndOfFile()) /
               100;
             if (progressCallback) {
-              progressCallback(progress);
+              progressCallback(progress, url, destinationFilePath);
             }
             fileHandle.closeFile();
           }

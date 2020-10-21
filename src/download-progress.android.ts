@@ -1,6 +1,6 @@
 import { File } from '@nativescript/core';
 
-type ProgressCallback = (progress: number) => void;
+type ProgressCallback = (progress: number, url: string, destination: string) => void;
 
 export class DownloadProgress {
   private promiseResolve: (value?: File | PromiseLike<File>) => void;
@@ -56,7 +56,7 @@ export class DownloadProgress {
       this.worker.onmessage = (msg: any) => {
         if (msg.data.progress) {
           if (this.progressCallback) {
-            this.progressCallback(msg.data.progress);
+            this.progressCallback(msg.data.progress, url, destinationFilePath);
           }
         } else if (msg.data.filePath) {
           this.promiseResolve(File.fromPath(msg.data.filePath));

@@ -21,8 +21,8 @@ tns plugin add nativescript-download-progress
 import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
-dp.setProgressCallback(progress => {
-    console.log('Progress:', progress);
+dp.setProgressCallback((progress, url, destination) => {
+    console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
 })
 dp.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(file => {
     console.log("Success", file);
@@ -37,8 +37,8 @@ dp.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(file =>
 import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
-dp.setProgressCallback(progress => {
-    console.log('Progress:', progress);
+dp.setProgressCallback((progress, url, destination) => {
+    console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
 })
 const url = "http://ipv4.download.thinkbroadband.com/20MB.zip";
 const destinationPath = "some/path/to/file.zip";
@@ -61,8 +61,8 @@ dp.downloadFile(url, requestOptions, destinationPath).then(file => {
 import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
-dp.setProgressCallback(progress => {
-    console.log('Progress:', progress);
+dp.setProgressCallback((progress, url, destination) => {
+    console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
 })
 try {
     const f = await downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip");

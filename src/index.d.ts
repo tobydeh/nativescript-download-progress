@@ -5,7 +5,7 @@ export declare type RequestOptions = {
   headers: Object;
 };
 
-export declare type ProgressCallback = (progress: number) => void;
+export declare type ProgressCallback = (progress: number, url: string, destination: string) => void;
 
 export declare class DownloadProgress {
   constructor();
