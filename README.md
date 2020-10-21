@@ -15,29 +15,29 @@ Nativescripts http.getFile method stores the data in memory which can cause out 
 tns plugin add nativescript-download-progress
 ```
 
-## Example
+## Examples
 
 ```typescript
 import { DownloadProgress } from "nativescript-download-progress"
 
-const download = new DownloadProgress();
-download.addProgressCallback(progress => {
+const dp = new DownloadProgress();
+dp.setProgressCallback(progress => {
     console.log('Progress:', progress);
 })
-download.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(file => {
+dp.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(file => {
     console.log("Success", file);
 }).catch(error => {
     console.log("Error", error);
 })
 ```
 
-## Passing request headers
+### Passing request headers
 
 ```typescript
 import { DownloadProgress } from "nativescript-download-progress"
 
-const download = new DownloadProgress();
-download.addProgressCallback(progress => {
+const dp = new DownloadProgress();
+dp.setProgressCallback(progress => {
     console.log('Progress:', progress);
 })
 const url = "http://ipv4.download.thinkbroadband.com/20MB.zip";
@@ -48,11 +48,27 @@ const requestOptions: RequestOptions = {
        Authorization: "Bearer token",
     }
 };
-download.downloadFile(url, requestOptions, destinationPath).then(file => {
+dp.downloadFile(url, requestOptions, destinationPath).then(file => {
     console.log("Success", file);
 }).catch(error => {
     console.log("Error", error);
 })
+```
+
+### Async / Await
+
+```typescript
+import { DownloadProgress } from "nativescript-download-progress"
+
+const dp = new DownloadProgress();
+dp.setProgressCallback(progress => {
+    console.log('Progress:', progress);
+})
+try {
+    const f = await downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip");
+} catch(e) {
+    console.log("Error", error);
+}
 ```
 
 ## License
