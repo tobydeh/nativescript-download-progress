@@ -9,6 +9,10 @@ export declare type ProgressCallback = (progress: number) => void;
 
 export declare class DownloadProgress {
   constructor();
+  setProgressCallback(callback: ProgressCallback): void;
+  /**
+   * @deprecated Use setProgressCallback
+   */
   addProgressCallback(callback: ProgressCallback): void;
   downloadFile(
     url: string,

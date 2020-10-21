@@ -21,6 +21,13 @@ const queue = NSOperationQueue.mainQueue;
 export class DownloadProgress {
   private progressCallback: ProgressCallback;
 
+  public setProgressCallback (callback: ProgressCallback) {
+    this.progressCallback = callback;
+  }
+
+  /**
+   * @deprecated Use setProgressCallback
+   */
   public addProgressCallback (callback: ProgressCallback) {
     this.progressCallback = callback;
   }

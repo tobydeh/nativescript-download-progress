@@ -18,6 +18,13 @@ export class DownloadProgress {
     }
   }
 
+  public setProgressCallback (callback: ProgressCallback) {
+    this.progressCallback = callback;
+  }
+
+  /**
+   * @deprecated Use setProgressCallback
+   */
   public addProgressCallback (callback: ProgressCallback) {
     this.progressCallback = callback;
   }
