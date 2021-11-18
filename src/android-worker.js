@@ -51,8 +51,9 @@ global.onmessage = function (msg) {
     }
 
     connection.connect();
-    if (connection.getResponseCode() !== java.net.HttpURLConnection.HTTP_OK) {
-      throw new Error('Server returned HTTP ' + connection.getResponseCode());
+    const statusCode = connection.getResponseCode();
+    if (statusCode < 200 || statusCode >= 400) {
+      throw new Error('Server responded with status code ' + statusCode);
     }
 
     contentLength = connection.getContentLength();

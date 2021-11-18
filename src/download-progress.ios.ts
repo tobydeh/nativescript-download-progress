@@ -125,6 +125,11 @@ export class DownloadProgress {
             if (error) {
               reject(error);
             } else {
+              const statusCode = task?.response?.statusCode || 0;
+              if (statusCode < 200 || statusCode >= 400) {
+                reject(new Error('Server responded with status code ' + statusCode));
+                return;
+              }
               resolve(destinationFile);
             }
           }
