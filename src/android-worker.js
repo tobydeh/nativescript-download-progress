@@ -1,15 +1,8 @@
 /* global java org */
-if (global.TNS_WEBPACK) {
-  if (global.android) {
-    // without this JavaProxy is missing and we can't import vendor below
-    global.require('~/../internal/ts_helpers.js');
-  }
-  global.require('~/vendor');
-} else {
-  require('globals');
-}
-const File = require('@nativescript/core/file-system').File;
-const getFilenameFromUrl = require('@nativescript/core/http/http-request/http-request-common').getFilenameFromUrl;
+import '@nativescript/core/globals';
+
+import { File } from '@nativescript/core/file-system';
+import { getFilenameFromUrl } from '@nativescript/core/http/http-request/http-request-common';
 
 global.onmessage = function (msg) {
   const url = msg.data.url;
@@ -72,8 +65,8 @@ global.onmessage = function (msg) {
       }
     }
     global.postMessage({ filePath: destinationFile.path });
-  } catch (ex) {
-    global.postMessage({ error: ex });
+  } catch (error) {
+    global.postMessage({ error: error.message });
   } finally {
     if (output) {
       output.flush();

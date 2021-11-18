@@ -1,0 +1,8 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+  <StackLayout padding="10" width="100%">
+    <TextField text="{{ url }}" />
+    <Label text="{{ text }}" marginTop="20" textWrap="true"  />
+    <Label text="{{ progress, 'Progress: ' + progress + '%' }}" marginTop="20" hidden="{{ progress === 0 }}" />
+    <Button text="Download" tap="{{ submit }}" marginTop="20" />
+  </StackLayout>
+</Page>

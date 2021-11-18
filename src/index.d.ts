@@ -1,11 +1,5 @@
 import { File } from '@nativescript/core';
-
-export declare type RequestOptions = {
-  method: string;
-  headers: Object;
-};
-
-export declare type ProgressCallback = (progress: number, url: string, destination: string) => void;
+import { RequestOptions, ProgressCallback } from './types';
 
 export declare class DownloadProgress {
   constructor();
@@ -16,7 +10,7 @@ export declare class DownloadProgress {
   addProgressCallback(callback: ProgressCallback): void;
   downloadFile(
     url: string,
-    options: (RequestOptions | string),
+    options?: (RequestOptions | string),
     destinationFilePath?: string
   ): Promise<File>;
 }

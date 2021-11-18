@@ -1,0 +1,58 @@
+{
+  "name": "nativescript-download-progress",
+  "version": "1.4.3",
+  "description": "Download large files with progress events",
+  "main": "dist/index",
+  "typings": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tobydeh/nativescript-download-progress.git"
+  },
+  "scripts": {
+    "postinstall": "ts-patch install",
+    "build": "rm -rf dist/ && tsc && cp src/index.d.ts dist/",
+    "prepack": "npm run build",
+    "clean": "npx rimraf -- node_modules package-lock.json && npm install",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "keywords": [
+    "NativeScript",
+    "JavaScript",
+    "Android",
+    "iOS",
+    "Download",
+    "Progress",
+    "Large File"
+  ],
+  "author": {
+    "name": "Toby de Havilland",
+    "email": "tobydeh@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/tobydeh/nativescript-download-progress/issues"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/tobydeh/nativescript-download-progress",
+  "devDependencies": {
+    "@nativescript/angular": "~12.2.0",
+    "@nativescript/core": "~8.1.5",
+    "@nativescript/types": "~8.1.1",
+    "@nativescript/webpack": "~5.0.1",
+    "@types/node": "^16.11.7",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^7.32.0",
+    "nativescript-worker-loader": "^0.12.1",
+    "rimraf": "^3.0.2",
+    "ts-patch": "^2.0.1",
+    "typescript": "~4.5.2"
+  },
+  "nativescript": {
+    "platforms": {
+      "android": "6.0.0",
+      "ios": "6.0.0"
+    }
+  },
+  "dependencies": {}
+}
