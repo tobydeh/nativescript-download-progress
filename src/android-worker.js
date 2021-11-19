@@ -1,26 +1,17 @@
 /* global java org */
 import '@nativescript/core/globals';
-
 import { File } from '@nativescript/core/file-system';
-import { getFilenameFromUrl } from '@nativescript/core/http/http-request/http-request-common';
 
 global.onmessage = function (msg) {
-  const url = msg.data.url;
-  const destinationFilePath = msg.data.destinationFilePath;
-  const options = msg.data.options;
-  let destinationFile;
+  const { url, destinationPath, request } = msg.data;
+  const file = File.fromPath(destinationPath);
   let contentLength = 0;
   let input;
   let output;
   let connection;
 
   try {
-    if (destinationFilePath) {
-      destinationFile = File.fromPath(destinationFilePath);
-    } else {
-      destinationFile = File.fromPath(getFilenameFromUrl(url));
-    }
-    destinationFile.writeTextSync('', function (e) {
+    file.writeTextSync('', function (e) {
       throw e;
     });
     const javaOptions = new org.nativescript.widgets.Async.Http.RequestOptions();
@@ -28,18 +19,15 @@ global.onmessage = function (msg) {
 
     const javaUrl = new java.net.URL(url);
     connection = javaUrl.openConnection();
-    // allow optional headers to be sent
-    if (options) {
-      const { headers, method } = options;
-      if (method) {
-        // this is GET by default
-        javaOptions.method = method;
-        connection.setRequestMethod(method);
-      }
-      if (headers) {
-        for (const key in headers) {
-          connection.setRequestProperty(key, headers[key]);
-        }
+    const { method, headers } = request || {};
+    if (method) {
+      // this is GET by default
+      javaOptions.method = method;
+      connection.setRequestMethod(method);
+    }
+    if (headers) {
+      for (const key in headers) {
+        connection.setRequestProperty(key, headers[key]);
       }
     }
 
@@ -51,7 +39,7 @@ global.onmessage = function (msg) {
 
     contentLength = connection.getContentLength();
     input = new java.io.BufferedInputStream(connection.getInputStream());
-    output = new java.io.FileOutputStream(destinationFile.path);
+    output = new java.io.FileOutputStream(file.path);
 
     const data = Array.create('byte', 4096);
     let total = 0;
@@ -64,7 +52,7 @@ global.onmessage = function (msg) {
         global.postMessage({ progress: progress });
       }
     }
-    global.postMessage({ filePath: destinationFile.path });
+    global.postMessage({ filePath: file.path });
   } catch (error) {
     global.postMessage({ error: error.message });
   } finally {

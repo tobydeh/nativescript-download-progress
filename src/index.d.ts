@@ -1,16 +1,22 @@
 import { File } from '@nativescript/core';
-import { RequestOptions, ProgressCallback } from './types';
+import { DownloadOptions, RequestOptions, ProgressCallback } from './shared';
 
 export declare class DownloadProgress {
+
   constructor();
+
   setProgressCallback(callback: ProgressCallback): void;
   /**
    * @deprecated Use setProgressCallback
    */
   addProgressCallback(callback: ProgressCallback): void;
-  downloadFile(
-    url: string,
-    options?: (RequestOptions | string),
-    destinationFilePath?: string
-  ): Promise<File>;
+
+  /**
+   * @deprecated Use download
+   */
+  downloadFile (url: string): Promise<File>;
+  downloadFile (url: string, destinationPath: string): Promise<File>;
+  downloadFile (url: string, options: RequestOptions, destinationPath: string): Promise<File>;
+
+  download(opts: DownloadOptions): Promise<File>;
 }

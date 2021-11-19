@@ -1,6 +1,6 @@
 import { File } from '@nativescript/core';
 import { getFilenameFromUrl } from '@nativescript/core/http/http-request/http-request-common';
-import { ProgressCallback, RequestOptions } from './types';
+import { DownloadOptions, DownloadProgressBase } from './shared';
 
 const currentDevice = UIDevice.currentDevice;
 const device =
@@ -16,63 +16,28 @@ const USER_AGENT = `Mozilla/5.0 (i${device}; CPU OS ${osVersion.replace(
 )} like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/${osVersion} Mobile/10A5355d Safari/8536.25`;
 const sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration;
 const queue = NSOperationQueue.mainQueue;
-export class DownloadProgress {
-  private progressCallback: ProgressCallback;
+export class DownloadProgress extends DownloadProgressBase {
 
-  public setProgressCallback (callback: ProgressCallback): void {
-    this.progressCallback = callback;
-  }
-
-  /**
-   * @deprecated Use setProgressCallback
-   */
-  public addProgressCallback (callback: ProgressCallback): void {
-    this.progressCallback = callback;
-  }
-
-  public downloadFile (url: string): Promise<File>;
-  public downloadFile (url: string, destinationFile: string): Promise<File>;
-  public downloadFile (url: string, options: RequestOptions, destinationFile: string): Promise<File>;
-  public downloadFile (
-    url: string,
-    options?: (RequestOptions | string),
-    destinationFilePath?: string
-  ): Promise<File> {
+  public download (opts: DownloadOptions): Promise<File> {
     return new Promise<File>((resolve, reject) => {
       const progressCallback = this.progressCallback;
-      let destinationFile: File;
-      // we check if options is a string
-      // since in older versions of this plugin,
-      // destinationFilePath was the second parameter.
-      // so we check if options is possibly destinationFilePath {String}
-      if (typeof options === 'string') {
-        destinationFilePath = options;
-      }
+      const {
+        url,
+        request,
+        destinationPath = getFilenameFromUrl(url)
+      } = opts;
+      const file = File.fromPath(destinationPath);
 
       try {
-        if (destinationFilePath) {
-          destinationFile = File.fromPath(destinationFilePath);
-        } else {
-          destinationFile = File.fromPath(getFilenameFromUrl(url));
-        }
-
-        destinationFile.writeTextSync('', e => {
-          throw e;
-        });
+        file.writeTextSync('', e => { throw e; });
         const urlRequest = NSMutableURLRequest.requestWithURL(NSURL.URLWithString(url));
         urlRequest.setValueForHTTPHeaderField(USER_AGENT, USER_AGENT_HEADER);
-        if (options && typeof options !== 'string') {
-          const { method, headers } = options;
-          if (method) {
-            urlRequest.HTTPMethod = method;
+        const { method, headers } = request || {};
+        urlRequest.HTTPMethod = method || 'GET';
+        if (headers) {
+          for (const key in headers) {
+            urlRequest.setValueForHTTPHeaderField(headers[key], key);
           }
-          if (headers) {
-            for (const key in headers) {
-              urlRequest.setValueForHTTPHeaderField(headers[key], key);
-            }
-          }
-        } else {
-          urlRequest.HTTPMethod = 'GET';
         }
 
         @NativeClass()
@@ -89,7 +54,7 @@ export class DownloadProgress {
             completionHandler: (p1: NSURLSessionResponseDisposition) => void
           ) {
             completionHandler(NSURLSessionResponseDisposition.Allow);
-            this.handle = NSFileHandle.fileHandleForWritingAtPath(destinationFile.path);
+            this.handle = NSFileHandle.fileHandleForWritingAtPath(file.path);
             this.handle.truncateAtOffsetError(0);
             this.contentLength = response.expectedContentLength;
           }
@@ -108,7 +73,7 @@ export class DownloadProgress {
             }
             if (this.contentLength > 0 && progressCallback) {
               const progress = written.value / this.contentLength;
-              progressCallback(progress, url, destinationFilePath);
+              progressCallback(progress, url, destinationPath);
             }
           }
 
@@ -126,7 +91,7 @@ export class DownloadProgress {
                 reject('Server responded with status code ' + statusCode);
                 return;
               }
-              resolve(destinationFile);
+              resolve(file);
             }
           }
         }
