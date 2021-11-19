@@ -31,9 +31,6 @@ export abstract class DownloadProgressBase {
   /**
   * @deprecated Use download
   */
-  public downloadFile (url: string): Promise<File>;
-  public downloadFile (url: string, destinationPath: string): Promise<File>;
-  public downloadFile (url: string, options: RequestOptions, destinationPath: string): Promise<File>;
   public downloadFile (
     url: string,
     options?: (RequestOptions | string),

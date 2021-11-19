@@ -22,13 +22,13 @@ import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
 dp.setProgressCallback((progress, url, destination) => {
-    console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
-})
-dp.downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip").then(file => {
-    console.log("Success", file);
+  console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
+});
+dp.download({ url: 'http://ipv4.download.thinkbroadband.com/20MB.zip' }).then(file => {
+  console.log('Success', file);
 }).catch(error => {
-    console.log("Error", error);
-})
+  console.log('Error', error);
+});
 ```
 
 ### Passing request headers
@@ -38,21 +38,23 @@ import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
 dp.setProgressCallback((progress, url, destination) => {
-    console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
-})
-const url = "http://ipv4.download.thinkbroadband.com/20MB.zip";
-const destinationPath = "some/path/to/file.zip";
-const requestOptions: RequestOptions = {
-    method: "GET",
+  console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
+});
+const opts = {
+  url: 'http://ipv4.download.thinkbroadband.com/20MB.zip',
+  destinationPath: 'some/path/to/file.zip',
+  request: {
+    method: 'GET',
     headers: {
-       Authorization: "Bearer token",
+      Authorization: 'Bearer token',
     }
+  }
 };
-dp.downloadFile(url, requestOptions, destinationPath).then(file => {
-    console.log("Success", file);
+dp.download(opts).then(file => {
+  console.log('Success', file);
 }).catch(error => {
-    console.log("Error", error);
-})
+  console.log('Error', error);
+});
 ```
 
 ### Async / Await
@@ -62,12 +64,13 @@ import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
 dp.setProgressCallback((progress, url, destination) => {
-    console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
-})
+  console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
+});
 try {
-    const f = await downloadFile("http://ipv4.download.thinkbroadband.com/20MB.zip");
-} catch(e) {
-    console.log("Error", error);
+  const f = await dp.download({ url: 'http://ipv4.download.thinkbroadband.com/20MB.zip' });
+  console.log(f.path);
+} catch (error) {
+  console.log('Error', error);
 }
 ```
 
