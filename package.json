@@ -10,7 +10,7 @@
   },
   "scripts": {
     "postinstall": "ts-patch install",
-    "build": "rm -rf dist/ && tsc && cp src/index.d.ts dist/",
+    "build": "rm -rf dist/ && tsc",
     "prepack": "npm run build",
     "clean": "npx rimraf -- node_modules package-lock.json && npm install",
     "lint": "eslint .",

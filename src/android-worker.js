@@ -41,6 +41,8 @@ global.onmessage = function (msg) {
     input = new java.io.BufferedInputStream(connection.getInputStream());
     output = new java.io.FileOutputStream(file.path);
 
+    global.postMessage({ contentLength });
+
     const data = Array.create('byte', 4096);
     let total = 0;
     let count = 0;

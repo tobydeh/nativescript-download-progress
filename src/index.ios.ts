@@ -1,6 +1,7 @@
 import { File } from '@nativescript/core';
 import { getFilenameFromUrl } from '@nativescript/core/http/http-request/http-request-common';
-import { DownloadOptions, DownloadProgressBase } from './shared';
+import { DownloadProgressBase } from './shared';
+import { DownloadOptions } from '.';
 
 const currentDevice = UIDevice.currentDevice;
 const device =
@@ -16,11 +17,15 @@ const USER_AGENT = `Mozilla/5.0 (i${device}; CPU OS ${osVersion.replace(
 )} like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/${osVersion} Mobile/10A5355d Safari/8536.25`;
 const sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration;
 const queue = NSOperationQueue.mainQueue;
+
 export class DownloadProgress extends DownloadProgressBase {
 
   public download (opts: DownloadOptions): Promise<File> {
     return new Promise<File>((resolve, reject) => {
       const progressCallback = this.progressCallback;
+      const emit = (event: string, data: any) => {
+        this.emit(event, data);
+      };
       const {
         url,
         request,
@@ -57,6 +62,7 @@ export class DownloadProgress extends DownloadProgressBase {
             this.handle = NSFileHandle.fileHandleForWritingAtPath(file.path);
             this.handle.truncateAtOffsetError(0);
             this.contentLength = response.expectedContentLength;
+            emit('started', { contentLength: this.contentLength });
           }
 
           public URLSessionDataTaskDidReceiveData (
@@ -71,9 +77,12 @@ export class DownloadProgress extends DownloadProgressBase {
             if (!this.handle.writeDataError(data)) {
               throw new Error('Error writing data');
             }
-            if (this.contentLength > 0 && progressCallback) {
+            if (this.contentLength > 0) {
               const progress = written.value / this.contentLength;
-              progressCallback(progress, url, destinationPath);
+              emit('progress', { progress, url, destinationPath });
+              if (progressCallback) {
+                progressCallback(progress, url, destinationPath);
+              }
             }
           }
 
@@ -84,13 +93,13 @@ export class DownloadProgress extends DownloadProgressBase {
           ) {
             this.handle.closeAndReturnError();
             if (error) {
-              reject(error);
+              reject(error.localizedDescription);
             } else {
               const statusCode = (task?.response as NSHTTPURLResponse)?.statusCode;
               if (statusCode < 200 || statusCode >= 400) {
-                reject('Server responded with status code ' + statusCode);
-                return;
+                return reject('Server responded with status code ' + statusCode);
               }
+              emit('finished', { file });
               resolve(file);
             }
           }

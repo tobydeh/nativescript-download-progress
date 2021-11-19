@@ -1,22 +1,14 @@
 import { File } from '@nativescript/core';
+import { EventEmitter } from 'events';
+import { DownloadOptions, ProgressCallback, RequestOptions } from '.';
 
-export type RequestOptions = {
-  method?: string;
-  headers?: Record<string, any>;
-};
-
-export type DownloadOptions = {
-  url: string;
-  request?: RequestOptions;
-  destinationPath?: string;
-};
-
-export type ProgressCallback = (progress: number, url: string, destination: string) => void;
-
-export abstract class DownloadProgressBase {
+export abstract class DownloadProgressBase extends EventEmitter {
 
   protected progressCallback: ProgressCallback;
 
+  /**
+   * @deprecated Use on
+   */
   public setProgressCallback (callback: ProgressCallback): void {
     this.progressCallback = callback;
   }
@@ -49,5 +41,4 @@ export abstract class DownloadProgressBase {
   }
 
   abstract download (opts: DownloadOptions): Promise<File>;
-
 }

@@ -1,7 +1,20 @@
 import { File } from '@nativescript/core';
-import { DownloadOptions, RequestOptions, ProgressCallback } from './shared';
+import { EventEmitter } from 'events';
 
-export declare class DownloadProgress {
+export type RequestOptions = {
+  method?: string;
+  headers?: Record<string, any>;
+};
+
+export type DownloadOptions = {
+  url: string;
+  request?: RequestOptions;
+  destinationPath?: string;
+};
+
+export type ProgressCallback = (progress: number, url: string, destination: string) => void;
+
+export declare class DownloadProgress extends EventEmitter {
 
   constructor();
 

@@ -14,7 +14,9 @@ export function navigatingTo (args: EventData): void {
       button.isUserInteractionEnabled = false;
 
       const dp = new DownloadProgress();
-      dp.setProgressCallback(progress => {
+      dp.on('started', ({ contentLength }) => console.log('started', contentLength));
+      dp.on('finished', ({ file }) => console.log('finished', file.path));
+      dp.on('progress', ({ progress }) => {
         this.progress = Math.round(progress * 100);
       });
 

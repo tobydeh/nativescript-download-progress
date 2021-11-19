@@ -21,9 +21,9 @@ tns plugin add nativescript-download-progress
 import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
-dp.setProgressCallback((progress, url, destination) => {
-  console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
-});
+dp.on('started', ({ contentLength }) => console.log('started', contentLength));
+dp.on('progress', ({ progress, url, destinationPath }) => console.log(progress, url, destinationPath));
+dp.on('finished', ({ file }) => console.log('finished', file.path));
 dp.download({ url: 'http://ipv4.download.thinkbroadband.com/20MB.zip' }).then(file => {
   console.log('Success', file);
 }).catch(error => {
@@ -37,9 +37,9 @@ dp.download({ url: 'http://ipv4.download.thinkbroadband.com/20MB.zip' }).then(fi
 import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
-dp.setProgressCallback((progress, url, destination) => {
-  console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
-});
+dp.on('started', ({ contentLength }) => console.log('started', contentLength));
+dp.on('progress', ({ progress, url, destinationPath }) => console.log(progress, url, destinationPath));
+dp.on('finished', ({ file }) => console.log('finished', file.path));
 const opts = {
   url: 'http://ipv4.download.thinkbroadband.com/20MB.zip',
   destinationPath: 'some/path/to/file.zip',
@@ -63,9 +63,9 @@ dp.download(opts).then(file => {
 import { DownloadProgress } from "nativescript-download-progress"
 
 const dp = new DownloadProgress();
-dp.setProgressCallback((progress, url, destination) => {
-  console.log('Progress:', progress, 'URL:', url, 'Destination', destination);
-});
+dp.on('started', ({ contentLength }) => console.log('started', contentLength));
+dp.on('progress', ({ progress, url, destinationPath }) => console.log(progress, url, destinationPath));
+dp.on('finished', ({ file }) => console.log('finished', file.path));
 try {
   const f = await dp.download({ url: 'http://ipv4.download.thinkbroadband.com/20MB.zip' });
   console.log(f.path);
