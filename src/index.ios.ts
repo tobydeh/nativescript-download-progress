@@ -16,7 +16,6 @@ const USER_AGENT = `Mozilla/5.0 (i${device}; CPU OS ${osVersion.replace(
 )} like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/${osVersion} Mobile/10A5355d Safari/8536.25`;
 const sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration;
 const queue = NSOperationQueue.mainQueue;
-
 export class DownloadProgress {
   private progressCallback: ProgressCallback;
 
@@ -81,7 +80,7 @@ export class DownloadProgress {
 
           static ObjCProtocols = [NSURLSessionDataDelegate];
           private contentLength: number;
-          private buffer: NSMutableData;
+          private handle: NSFileHandle;
 
           public URLSessionDataTaskDidReceiveResponseCompletionHandler (
             _session: NSURLSession,
@@ -90,7 +89,8 @@ export class DownloadProgress {
             completionHandler: (p1: NSURLSessionResponseDisposition) => void
           ) {
             completionHandler(NSURLSessionResponseDisposition.Allow);
-            this.buffer = NSMutableData.new();
+            this.handle = NSFileHandle.fileHandleForWritingAtPath(destinationFile.path);
+            this.handle.truncateAtOffsetError(0);
             this.contentLength = response.expectedContentLength;
           }
 
@@ -99,9 +99,15 @@ export class DownloadProgress {
             _dataTask: NSURLSessionDataTask,
             data: NSData
           ) {
-            this.buffer.appendData(data);
+            const written = new interop.Reference(0);
+            if (!this.handle.seekToEndReturningOffsetError(written)) {
+              throw new Error('Error seeking end of file');
+            }
+            if (!this.handle.writeDataError(data)) {
+              throw new Error('Error writing data');
+            }
             if (this.contentLength > 0 && progressCallback) {
-              const progress = this.buffer.length / this.contentLength;
+              const progress = written.value / this.contentLength;
               progressCallback(progress, url, destinationFilePath);
             }
           }
@@ -111,6 +117,7 @@ export class DownloadProgress {
             task: NSURLSessionTask,
             error: NSError
           ) {
+            this.handle.closeAndReturnError();
             if (error) {
               reject(error);
             } else {
@@ -119,9 +126,6 @@ export class DownloadProgress {
                 reject('Server responded with status code ' + statusCode);
                 return;
               }
-              const fileHandle = NSFileHandle.fileHandleForWritingAtPath(destinationFile.path);
-              fileHandle.writeData(this.buffer);
-              fileHandle.closeFile();
               resolve(destinationFile);
             }
           }
@@ -132,9 +136,9 @@ export class DownloadProgress {
           <DownloadProgressDelegate>DownloadProgressDelegate.new(),
           queue
         );
-        const dataTask = session.dataTaskWithRequest(urlRequest);
-
+        const dataTask = session.dataTaskWithRequest(urlRequest); 
         dataTask.resume();
+
       } catch (ex) {
         reject(ex);
       }
